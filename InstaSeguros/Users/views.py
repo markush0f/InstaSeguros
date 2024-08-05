@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from .models import User
+from Users.models import User
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserSerializer
@@ -60,6 +60,13 @@ class UserView(APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    # def put(self, request, pk):
-    #     try:
-    #         user = self.get_user_by_id_or_404(pk)
+    def put(self, request, pk):
+        user = self.get_user_by_id_or_404(pk)
+        user_serializer = UserSerializer(user, data=request.data, partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response({"user": user_serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"user": user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST
+            )
