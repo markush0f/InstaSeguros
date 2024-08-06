@@ -4,5 +4,5 @@ from .views import UserView
 
 urlpatterns = [
     path("", UserView.as_view(), name="user_view"),
-    path("<int:pk>", UserView.as_view(), name="user_view_param"),
+    path("<int:pk>/", UserView.as_view(), name="user_view_param"),
 ]
