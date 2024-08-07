@@ -4,6 +4,8 @@ from Users.models import User
 import pytest
 from Users.factories import UserFactory
 import json
+from Users.views import *
+
 
 client = Client()
 
@@ -129,5 +131,19 @@ def test_my_view_put_invalid_data():
         data=json.dumps(data),
         content_type="application/json",
     )
-    print( user)
+    print(user)
     assert response.status_code == 400
+
+
+def test_create_user_serializer():
+    user_serializer = User.views.create_user_serializer(
+        {
+            "username": "markus",
+            "email": "markus@gmail.com",
+            "password": "1234",
+            "name": "markus",
+            "last_name": "abramian",
+            "birth": "2004-09-08",
+        }
+    )
+    print("User serializer: ", user_serializer)
